@@ -121,6 +121,11 @@
             animation: pulse 2s infinite alternate;
         }
 
+        @keyframes pulse {
+            from { opacity: 0.8; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
         .btn-explore {
             margin-top: 50px;
             padding: 15px 40px;
@@ -325,83 +330,14 @@
         .timeline-item:nth-child(odd)::before { right: 50%; }
         .timeline-item:nth-child(even)::before { left: 50%; }
 
-        /* ================= FOOTER & FORM ================= */
+        /* ================= FOOTER ================= */
         footer {
             position: relative;
-            padding: 100px 20px;
+            padding: 120px 20px;
             text-align: center;
             z-index: 10;
             background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
             border-top: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .stats-container {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin: 40px 0;
-            flex-wrap: wrap;
-        }
-
-        .stat-box {
-            padding: 20px;
-            min-width: 200px;
-            text-align: center;
-        }
-
-        .stat-num {
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--neon-lime);
-            text-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
-        }
-
-        .prediction-form {
-            max-width: 500px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            background: rgba(0,0,0,0.5);
-            padding: 30px;
-            border-radius: var(--card-radius);
-            border: 1px solid var(--neon-purple);
-            box-shadow: 0 0 20px rgba(188, 19, 254, 0.1);
-        }
-
-        .prediction-form input, .prediction-form textarea {
-            width: 100%;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #fff;
-            padding: 12px;
-            border-radius: 6px;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1.1rem;
-            transition: border 0.3s;
-        }
-        .prediction-form input:focus, .prediction-form textarea:focus {
-            outline: none;
-            border-color: var(--neon-cyan);
-            box-shadow: 0 0 10px rgba(0,243,255,0.2);
-        }
-
-        .btn-submit {
-            background: linear-gradient(45deg, var(--neon-purple), var(--neon-cyan));
-            color: #fff;
-            border: none;
-            padding: 15px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            border-radius: 6px;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-family: 'Orbitron', sans-serif;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .btn-submit:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 20px var(--neon-purple);
         }
 
         /* ================= MEDIA QUERIES ================= */
@@ -449,31 +385,8 @@
 
     <!-- Footer -->
     <footer id="footer">
-        <h2 class="orbitron neon-text-purple" style="font-size: 2.5rem; margin-bottom: 20px;">¿LISTO PARA EL FUTURO?</h2>
-        <p class="desc" style="max-width: 600px; margin: 0 auto;">El ritmo de la innovación se acelera. Lo que antes tomaba décadas, ahora ocurre en meses.</p>
-        
-        <div class="stats-container glass-panel">
-            <div class="stat-box">
-                <div class="stat-num" id="stat-params">0</div>
-                <div class="desc">Trillones de Parámetros (Proyectado)</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-num" id="stat-petaflops">0</div>
-                <div class="desc">ExaFLOPs de Cómputo</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-num">AGI</div>
-                <div class="desc">Siguiente Frontera</div>
-            </div>
-        </div>
-
-        <form class="prediction-form" onsubmit="event.preventDefault(); alert('¡Predicción registrada en la blockchain neural!'); this.reset();">
-            <h3 class="orbitron" style="color: var(--neon-cyan);">Generar tu predicción IA</h3>
-            <input type="text" placeholder="Tu Nombre/Alias" required>
-            <input type="number" placeholder="Año estimado de la AGI (ej. 2029)" required min="2024" max="2100">
-            <textarea rows="3" placeholder="¿Cómo cambiará el mundo?" required></textarea>
-            <button type="submit" class="btn-submit">Enviar al Oráculo</button>
-        </form>
+        <h2 class="orbitron neon-text-purple" style="font-size: 3rem; margin-bottom: 20px;">GRACIAS POR VER</h2>
+        <p class="hero-subtitle orbitron" style="color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan);">Hecho por Adrián Yael Verdejo Figueroa</p>
     </footer>
 
     <!-- JS Logic -->
@@ -591,7 +504,7 @@
             timelineProgress.style.height = `${progress}%`;
         });
 
-        /* ================= NUEVO SISTEMA DE AUDIO (EFECTOS Y AMBIENTE SUAVE) ================= */
+        /* ================= SISTEMA DE AUDIO ================= */
         let audioCtx;
         let ambientPlaying = false;
 
@@ -603,27 +516,22 @@
             if (audioCtx.state === 'suspended') audioCtx.resume();
         }
 
-        // Efecto de sonido al pasar el ratón por encima de las tarjetas (Blip holográfico)
         function playHoverSound() {
             if (!audioCtx || audioCtx.state !== 'running') return;
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.type = 'sine';
-            // Frecuencia aleatoria para dar sensación de datos procesándose
             osc.frequency.setValueAtTime(1000 + Math.random() * 500, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.015, audioCtx.currentTime); // Volumen muy bajito
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1); // Desaparece rápido
+            gain.gain.setValueAtTime(0.015, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
             osc.connect(gain);
             gain.connect(audioCtx.destination);
             osc.start();
             osc.stop(audioCtx.currentTime + 0.1);
         }
 
-        // Sonido de inicio al hacer clic en "Explorar" + Viento Espacial suave
         function playStartEffects() {
             initAudio();
-            
-            // 1. Sonido de "Encendido" (Power up sweep)
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.type = 'triangle';
@@ -637,28 +545,25 @@
             osc.start();
             osc.stop(audioCtx.currentTime + 1);
 
-            // 2. Viento espacial muy suave (Ruido blanco filtrado)
             if (!ambientPlaying) {
                 ambientPlaying = true;
                 const bufferSize = audioCtx.sampleRate * 2;
                 const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
                 const data = buffer.getChannelData(0);
-                for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1; // Genera ruido
+                for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
                 
                 const noise = audioCtx.createBufferSource();
                 noise.buffer = buffer;
                 noise.loop = true;
                 
-                // Filtro para quitar frecuencias molestas y dejar un soplido grave
                 const filter = audioCtx.createBiquadFilter();
                 filter.type = 'bandpass';
                 filter.frequency.value = 300;
                 filter.Q.value = 0.5;
 
-                // Modulador para que el viento suba y baje sutilmente
                 const lfo = audioCtx.createOscillator();
                 lfo.type = 'sine';
-                lfo.frequency.value = 0.05; // Muy lento
+                lfo.frequency.value = 0.05;
                 const lfoGain = audioCtx.createGain();
                 lfoGain.gain.value = 150;
                 lfo.connect(lfoGain);
@@ -667,7 +572,7 @@
                 
                 const ambGain = audioCtx.createGain();
                 ambGain.gain.setValueAtTime(0, audioCtx.currentTime);
-                ambGain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 4); // Volumen bajísimo del ambiente
+                ambGain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 4);
 
                 noise.connect(filter);
                 filter.connect(ambGain);
@@ -676,7 +581,6 @@
             }
         }
 
-        // Asignar el evento de hover a todas las tarjetas recién creadas
         setTimeout(() => {
             document.querySelectorAll('.timeline-content').forEach(card => {
                 card.addEventListener('mouseenter', playHoverSound);
@@ -688,7 +592,7 @@
             document.getElementById('timeline-container').scrollIntoView({ behavior: 'smooth' });
         }
 
-        /* ================= CANVAS PARTICLES (DUST/NEURAL NETWORK) ================= */
+        /* ================= CANVAS PARTICLES ================= */
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let width, height, particles = [];
@@ -711,25 +615,19 @@
 
         function drawCanvas() {
             ctx.clearRect(0, 0, width, height);
-            
             for(let i=0; i<particles.length; i++) {
                 let p = particles[i];
                 p.x += p.vx;
                 p.y += p.vy;
-
-                // Wrap around edges
                 if(p.x < 0) p.x = width;
                 if(p.x > width) p.x = 0;
                 if(p.y < 0) p.y = height;
                 if(p.y > height) p.y = 0;
-
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                 ctx.fillStyle = p.color;
                 ctx.globalAlpha = 0.5;
                 ctx.fill();
-
-                // Draw lines between close particles
                 for(let j=i+1; j<particles.length; j++) {
                     let p2 = particles[j];
                     let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
@@ -750,27 +648,6 @@
         window.addEventListener('resize', initCanvas);
         initCanvas();
         drawCanvas();
-
-        /* ================= FOOTER STATS ANIMATION ================= */
-        function animateStat(id, endVal, suffix) {
-            let el = document.getElementById(id);
-            let current = 0;
-            let timer = setInterval(() => {
-                current += endVal / 50;
-                if(current >= endVal) { current = endVal; clearInterval(timer); }
-                el.innerText = current.toFixed(1) + suffix;
-            }, 30);
-        }
-
-        // Trigger stats when footer is reached
-        const footerObserver = new IntersectionObserver((entries) => {
-            if(entries[0].isIntersecting) {
-                animateStat('stat-params', 1.7, 'T+'); // Params
-                animateStat('stat-petaflops', 100, '+'); // FLOPs
-                footerObserver.disconnect();
-            }
-        }, { threshold: 0.5 });
-        footerObserver.observe(document.getElementById('footer'));
 
     </script>
 </body>
