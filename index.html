@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timeline de la IA: De Turing a la AGI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* ================= VARIABLES ================= */
+        :root {
+            --bg-dark: #050508;
+            --neon-cyan: #00f3ff;
+            --neon-purple: #bc13fe;
+            --neon-lime: #39ff14;
+            --text-main: #e0e6ed;
+            --text-muted: #8b9bb4;
+            --glass-bg: rgba(10, 15, 30, 0.4);
+            --glass-border: rgba(0, 243, 255, 0.2);
+            --card-radius: 12px;
+        }
+
+        /* ================= RESET & BASE ================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, .orbitron { font-family: 'Orbitron', sans-serif; }
+
+        /* ================= CANVAS PARTICLES ================= */
+        #particle-canvas {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0; pointer-events: none;
+        }
+
+        /* ================= UTILS & EFFECTS ================= */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--card-radius);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .neon-text-cyan { text-shadow: 0 0 5px var(--neon-cyan), 0 0 20px var(--neon-cyan); color: #fff; }
+        .neon-text-purple { text-shadow: 0 0 5px var(--neon-purple), 0 0 20px var(--neon-purple); color: #fff; }
+        .neon-text-lime { text-shadow: 0 0 5px var(--neon-lime), 0 0 20px var(--neon-lime); color: #fff; }
+
+        /* Glitch Effect */
+        .glitch-wrapper { position: relative; display: inline-block; }
+        .glitch {
+            position: relative;
+            color: white;
+            font-size: 5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 0 0 20px var(--neon-cyan);
+        }
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.8;
+        }
+        .glitch::before {
+            left: 3px; text-shadow: -2px 0 var(--neon-purple);
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+        .glitch::after {
+            left: -3px; text-shadow: -2px 0 var(--neon-lime);
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim2 5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(70px, 9999px, 71px, 0); }
+            5% { clip: rect(29px, 9999px, 83px, 0); }
+            10% { clip: rect(65px, 9999px, 25px, 0); }
+            15% { clip: rect(100px, 9999px, 11px, 0); }
+            20% { clip: rect(32px, 9999px, 60px, 0); }
+            25% { clip: rect(21px, 9999px, 9px, 0); }
+            100% { clip: rect(21px, 9999px, 9px, 0); }
+        }
+        @keyframes glitch-anim2 {
+            0% { clip: rect(29px, 9999px, 83px, 0); }
+            5% { clip: rect(70px, 9999px, 71px, 0); }
+            10% { clip: rect(10px, 9999px, 50px, 0); }
+            15% { clip: rect(80px, 9999px, 20px, 0); }
+            20% { clip: rect(50px, 9999px, 90px, 0); }
+            25% { clip: rect(30px, 9999px, 10px, 0); }
+            100% { clip: rect(30px, 9999px, 10px, 0); }
+        }
+
+        /* ================= HERO SECTION ================= */
+        #hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 10;
+            background: radial-gradient(circle at center, rgba(0, 243, 255, 0.1) 0%, transparent 60%);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--neon-purple);
+            letter-spacing: 3px;
+            margin-top: 10px;
+            text-shadow: 0 0 10px var(--neon-purple);
+            animation: pulse 2s infinite alternate;
+        }
+
+        .btn-explore {
+            margin-top: 50px;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            color: #fff;
+            background: transparent;
+            border: 2px solid var(--neon-cyan);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .btn-explore:hover {
+            background: var(--neon-cyan);
+            color: var(--bg-dark);
+            box-shadow: 0 0 30px var(--neon-cyan), 0 0 50px var(--neon-cyan);
+            transform: scale(1.05);
+        }
+
+        /* ================= TIMELINE SECTION ================= */
+        #timeline-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px;
+            z-index: 10;
+        }
+
+        /* The central line */
+        .timeline-track {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        /* The glowing filled line */
+        .timeline-progress {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 4px;
+            height: 0%; /* Changed by JS */
+            background: linear-gradient(to bottom, var(--neon-cyan), var(--neon-purple), var(--neon-lime));
+            transform: translateX(-50%);
+            border-radius: 2px;
+            box-shadow: 0 0 15px var(--neon-cyan);
+            transition: height 0.1s ease-out;
+        }
+
+        /* Timeline Items */
+        .timeline-item {
+            position: relative;
+            width: 100%;
+            margin-bottom: 120px;
+            display: flex;
+            justify-content: flex-end; /* Default right side */
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-item:nth-child(odd) {
+            justify-content: flex-start; /* Left side */
+        }
+
+        /* The Dot */
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 30px;
+            width: 24px;
+            height: 24px;
+            background: var(--bg-dark);
+            border: 4px solid var(--neon-cyan);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            box-shadow: 0 0 10px var(--neon-cyan);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item.visible .timeline-dot {
+            background: var(--neon-cyan);
+            box-shadow: 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-cyan);
+        }
+        
+        .timeline-item:nth-child(3n+2) .timeline-dot { border-color: var(--neon-purple); }
+        .timeline-item.visible:nth-child(3n+2) .timeline-dot { background: var(--neon-purple); box-shadow: 0 0 20px var(--neon-purple); }
+        .timeline-item:nth-child(3n+3) .timeline-dot { border-color: var(--neon-lime); }
+        .timeline-item.visible:nth-child(3n+3) .timeline-dot { background: var(--neon-lime); box-shadow: 0 0 20px var(--neon-lime); }
+
+        /* The Card */
+        .timeline-content {
+            width: 45%;
+            padding: 30px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 243, 255, 0.2);
+            border-color: var(--neon-cyan);
+        }
+
+        .timeline-item:nth-child(3n+2) .timeline-content:hover { border-color: var(--neon-purple); box-shadow: 0 15px 40px rgba(188, 19, 254, 0.2); }
+        .timeline-item:nth-child(3n+3) .timeline-content:hover { border-color: var(--neon-lime); box-shadow: 0 15px 40px rgba(57, 255, 20, 0.2); }
+
+        .year-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .year {
+            font-size: 3rem;
+            font-weight: 900;
+            background: -webkit-linear-gradient(45deg, #fff, var(--neon-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0,243,255,0.3);
+        }
+        .timeline-item:nth-child(3n+2) .year { background: -webkit-linear-gradient(45deg, #fff, var(--neon-purple)); -webkit-background-clip: text; }
+        .timeline-item:nth-child(3n+3) .year { background: -webkit-linear-gradient(45deg, #fff, var(--neon-lime)); -webkit-background-clip: text; }
+
+        .svg-icon {
+            width: 50px;
+            height: 50px;
+            fill: none;
+            stroke: var(--neon-cyan);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            filter: drop-shadow(0 0 5px var(--neon-cyan));
+            transition: transform 0.5s ease;
+        }
+        .timeline-content:hover .svg-icon { transform: rotateY(180deg); }
+        .timeline-item:nth-child(3n+2) .svg-icon { stroke: var(--neon-purple); filter: drop-shadow(0 0 5px var(--neon-purple)); }
+        .timeline-item:nth-child(3n+3) .svg-icon { stroke: var(--neon-lime); filter: drop-shadow(0 0 5px var(--neon-lime)); }
+
+
+        .title {
+            font-size: 1.6rem;
+            color: #fff;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .desc {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Hover Extra Info */
+        .extra-info {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, opacity 0.5s ease;
+            opacity: 0;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed rgba(255,255,255,0.1);
+            color: var(--text-main);
+            font-size: 1rem;
+            font-style: italic;
+        }
+        .timeline-content:hover .extra-info {
+            max-height: 150px;
+            opacity: 1;
+        }
+
+        /* Connecting Lines */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            width: 5%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 1;
+        }
+        .timeline-item:nth-child(odd)::before { right: 50%; }
+        .timeline-item:nth-child(even)::before { left: 50%; }
+
+        /* ================= FOOTER & FORM ================= */
+        footer {
+            position: relative;
+            padding: 100px 20px;
+            text-align: center;
+            z-index: 10;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-box {
+            padding: 20px;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .stat-num {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--neon-lime);
+            text-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
+        }
+
+        .prediction-form {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: rgba(0,0,0,0.5);
+            padding: 30px;
+            border-radius: var(--card-radius);
+            border: 1px solid var(--neon-purple);
+            box-shadow: 0 0 20px rgba(188, 19, 254, 0.1);
+        }
+
+        .prediction-form input, .prediction-form textarea {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 12px;
+            border-radius: 6px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+            transition: border 0.3s;
+        }
+        .prediction-form input:focus, .prediction-form textarea:focus {
+            outline: none;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 10px rgba(0,243,255,0.2);
+        }
+
+        .btn-submit {
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-cyan));
+            color: #fff;
+            border: none;
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-family: 'Orbitron', sans-serif;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-submit:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px var(--neon-purple);
+        }
+
+        /* ================= MEDIA QUERIES ================= */
+        @media (max-width: 768px) {
+            .glitch { font-size: 3rem; }
+            .hero-subtitle { font-size: 1.2rem; }
+            
+            .timeline-track, .timeline-progress { left: 30px; transform: none; }
+            
+            .timeline-item { justify-content: flex-end; width: 100%; }
+            .timeline-item:nth-child(odd) { justify-content: flex-end; }
+            
+            .timeline-content { width: calc(100% - 70px); }
+            
+            .timeline-dot { left: 30px; transform: translate(-50%, -50%); }
+            
+            .timeline-item::before { display: none; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Particle Background -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Hero Section -->
+    <header id="hero">
+        <div class="glitch-wrapper">
+            <h1 class="glitch orbitron" data-text="EL ASCENSO DE LA IA">EL ASCENSO DE LA IA</h1>
+        </div>
+        <p class="hero-subtitle orbitron">Un viaje cronológico al futuro</p>
+        <button class="btn-explore orbitron" onclick="startJourney()">Explorar Timeline ↓</button>
+    </header>
+
+    <!-- Timeline Section -->
+    <section id="timeline-container">
+        <div class="timeline-track"></div>
+        <div class="timeline-progress" id="timeline-progress"></div>
+        
+        <div id="timeline-content-wrapper">
+            <!-- Items generated by JS -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <h2 class="orbitron neon-text-purple" style="font-size: 2.5rem; margin-bottom: 20px;">¿LISTO PARA EL FUTURO?</h2>
+        <p class="desc" style="max-width: 600px; margin: 0 auto;">El ritmo de la innovación se acelera. Lo que antes tomaba décadas, ahora ocurre en meses.</p>
+        
+        <div class="stats-container glass-panel">
+            <div class="stat-box">
+                <div class="stat-num" id="stat-params">0</div>
+                <div class="desc">Trillones de Parámetros (Proyectado)</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-num" id="stat-petaflops">0</div>
+                <div class="desc">ExaFLOPs de Cómputo</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-num">AGI</div>
+                <div class="desc">Siguiente Frontera</div>
+            </div>
+        </div>
+
+        <form class="prediction-form" onsubmit="event.preventDefault(); alert('¡Predicción registrada en la blockchain neural!'); this.reset();">
+            <h3 class="orbitron" style="color: var(--neon-cyan);">Generar tu predicción IA</h3>
+            <input type="text" placeholder="Tu Nombre/Alias" required>
+            <input type="number" placeholder="Año estimado de la AGI (ej. 2029)" required min="2024" max="2100">
+            <textarea rows="3" placeholder="¿Cómo cambiará el mundo?" required></textarea>
+            <button type="submit" class="btn-submit">Enviar al Oráculo</button>
+        </form>
+    </footer>
+
+    <!-- JS Logic -->
+    <script>
+        /* ================= MILESTONES DATA & SVG GENERATION ================= */
+        const svgLibrary = {
+            brain: `<path d="M25 40 Q 20 20, 40 15 Q 60 10, 75 25 Q 90 40, 80 60 Q 70 85, 50 85 Q 25 85, 15 65 Q 5 45, 25 40 Z"/><circle cx="35" cy="45" r="3"/><circle cx="55" cy="35" r="3"/><circle cx="65" cy="55" r="3"/><path d="M35 45 L 55 35 L 65 55 Z" stroke-dasharray="2 2"/>`,
+            robot: `<rect x="20" y="20" width="60" height="60" rx="10"/><circle cx="35" cy="40" r="5"/><circle cx="65" cy="40" r="5"/><path d="M30 65 L 70 65"/><path d="M50 20 L 50 10"/><circle cx="50" cy="5" r="3"/>`,
+            academic: `<path d="M10 40 L 50 15 L 90 40 L 50 65 Z"/><path d="M20 46 L 20 70 Q 50 85, 80 70 L 80 46"/><rect x="45" y="65" width="10" height="20"/>`,
+            chat: `<path d="M15 25 Q 15 15, 30 15 L 70 15 Q 85 15, 85 30 L 85 60 Q 85 75, 70 75 L 40 75 L 15 90 Z"/><circle cx="35" cy="45" r="4"/><circle cx="50" cy="45" r="4"/><circle cx="65" cy="45" r="4"/>`,
+            network: `<circle cx="20" cy="50" r="8"/><circle cx="50" cy="20" r="8"/><circle cx="50" cy="80" r="8"/><circle cx="80" cy="50" r="8"/><path d="M28 50 L 42 28"/><path d="M28 50 L 42 72"/><path d="M58 28 L 72 50"/><path d="M58 72 L 72 50"/><path d="M50 28 L 50 72"/>`,
+            database: `<ellipse cx="50" cy="25" rx="30" ry="10"/><path d="M20 25 L 20 75 A 30 10 0 0 0 80 75 L 80 25"/><ellipse cx="50" cy="50" rx="30" ry="10"/><ellipse cx="50" cy="75" rx="30" ry="10"/>`,
+            chess: `<path d="M30 80 L 70 80 L 65 70 L 35 70 Z"/><path d="M40 70 L 60 70 L 55 40 L 45 40 Z"/><circle cx="50" cy="25" r="10"/><path d="M50 15 L 50 5 M 45 10 L 55 10"/>`,
+            magnify: `<circle cx="40" cy="40" r="20"/><path d="M55 55 L 80 80" stroke-width="6"/><circle cx="40" cy="40" r="10" stroke-dasharray="2 4"/>`,
+            layers: `<path d="M10 50 L 50 30 L 90 50 L 50 70 Z"/><path d="M10 65 L 50 45 L 90 65 L 50 85 Z" opacity="0.5"/><path d="M10 80 L 50 60 L 90 80 L 50 100 Z" opacity="0.2"/>`,
+            goBoard: `<rect x="15" y="15" width="70" height="70"/><path d="M15 38 L 85 38 M 15 62 L 85 62"/><path d="M38 15 L 38 85 M 62 15 L 62 85"/><circle cx="38" cy="38" r="6" fill="currentColor"/><circle cx="62" cy="62" r="6" fill="currentColor"/>`,
+            transformer: `<rect x="20" y="20" width="60" height="60" rx="5"/><path d="M30 40 L 70 40 M 30 60 L 70 60"/><circle cx="50" cy="50" r="10"/><path d="M50 20 L 50 10 M 50 80 L 50 90 M 20 50 L 10 50 M 80 50 L 90 50"/>`,
+            gptNode: `<circle cx="50" cy="50" r="20"/><circle cx="50" cy="50" r="35" stroke-dasharray="5 5"/><path d="M50 50 L 10 10 M 50 50 L 90 10 M 50 50 L 10 90 M 50 50 L 90 90"/>`,
+            prompt: `<rect x="15" y="25" width="70" height="50" rx="5"/><path d="M25 40 L 35 50 L 25 60"/><line x1="45" y1="60" x2="60" y2="60" stroke-width="3" class="blink"/>`,
+            complexNet: `<path d="M20 20 Q 50 50, 80 20 T 50 80 T 20 20"/><circle cx="20" cy="20" r="5"/><circle cx="80" cy="20" r="5"/><circle cx="50" cy="80" r="5"/><circle cx="50" cy="50" r="8"/>`,
+            videoGen: `<rect x="10" y="25" width="80" height="50" rx="5"/><path d="M40 40 L 60 50 L 40 60 Z" fill="currentColor"/><path d="M15 15 L 85 15 M 15 85 L 85 85" stroke-dasharray="4 4"/>`,
+            agiEye: `<path d="M10 50 Q 50 10, 90 50 Q 50 90, 10 50 Z"/><circle cx="50" cy="50" r="15"/><circle cx="50" cy="50" r="5" fill="currentColor"/><path d="M50 15 L 50 5 M 50 85 L 50 95" opacity="0.5"/>`,
+            galaxy: `<path d="M50 50 m -40, 0 a 40,40 0 1,0 80,0 a 40,40 0 1,0 -80,0" stroke-dasharray="10 20" class="spin"/><circle cx="50" cy="50" r="10"/><path d="M50 50 L 90 10 M 50 50 L 10 90" stroke-dasharray="2 2"/>`
+        };
+
+        const milestones = [
+            { year: 1943, title: "Redes Neuronales Teóricas", desc: "Warren McCulloch y Walter Pitts proponen el primer modelo matemático de una red neuronal artificial.", extra: "Inspirado en la biología, demostraron que una red simple podía calcular cualquier función lógica.", icon: 'brain' },
+            { year: 1950, title: "El Test de Turing", desc: "Alan Turing publica 'Computing Machinery and Intelligence', introduciendo el 'Juego de la Imitación'.", extra: "Estableció el estándar filosófico de qué significa que una máquina 'piense'.", icon: 'robot' },
+            { year: 1956, title: "Conferencia de Dartmouth", desc: "Nace oficialmente el término 'Inteligencia Artificial'.", extra: "John McCarthy, Marvin Minsky, y otros fundan el campo con la premisa de simular cada aspecto del aprendizaje humano.", icon: 'academic' },
+            { year: 1966, title: "ELIZA", desc: "Joseph Weizenbaum crea el primer chatbot en el MIT, simulando a un psicoterapeuta.", extra: "Sorprendió al mundo al demostrar que los humanos empatizan fácilmente con programas simples de procesamiento de lenguaje.", icon: 'chat' },
+            { year: 1969, title: "El Perceptrón", desc: "Minsky y Papert publican una crítica a las redes neuronales simples, causando el primer 'Invierno de la IA'.", extra: "Demostraron limitaciones en compuertas XOR, pausando la inversión en redes neuronales por años.", icon: 'network' },
+            { year: 1980, title: "Sistemas Expertos", desc: "Auge de programas diseñados para emular la toma de decisiones de expertos humanos (ej. XCON).", extra: "Revivió la industria comercialmente, pero resultaron frágiles y difíciles de mantener.", icon: 'database' },
+            { year: 1997, title: "Deep Blue vs Kasparov", desc: "La supercomputadora de IBM derrota al campeón mundial de ajedrez Garry Kasparov.", extra: "Un hito de la 'IA Simbólica' y la fuerza bruta computacional.", icon: 'chess' },
+            { year: 2011, title: "IBM Watson Gana Jeopardy!", desc: "Watson vence a los campeones humanos Ken Jennings y Brad Rutter usando NLP.", extra: "Demostró la capacidad de entender lenguaje natural complejo, modismos y juegos de palabras.", icon: 'magnify' },
+            { year: 2012, title: "La Revolución AlexNet", desc: "Una red neuronal convolucional (CNN) arrasa en la competencia ImageNet.", extra: "Inició la era moderna del Deep Learning aprovechando el poder masivo de las GPUs.", icon: 'layers' },
+            { year: 2016, title: "AlphaGo", desc: "La IA de DeepMind derrota a Lee Sedol, campeón mundial del complejo juego de mesa Go.", extra: "Utilizó Aprendizaje por Refuerzo (RL) combinado con redes neuronales, superando intuición humana.", icon: 'goBoard' },
+            { year: 2017, title: "Transformers", desc: "Google publica el paper 'Attention Is All You Need', revolucionando el NLP.", extra: "El mecanismo de 'Atención' permitió procesar texto en paralelo, allanando el camino para los LLMs.", icon: 'transformer' },
+            { year: 2018, title: "Nace GPT-1", desc: "OpenAI lanza el Generative Pre-trained Transformer original.", extra: "Demostró que pre-entrenar un modelo en texto no etiquetado y luego refinarlo era el camino al éxito.", icon: 'gptNode' },
+            { year: 2022, title: "ChatGPT & DALL-E", desc: "La explosión generativa. La IA se vuelve accesible y viral mundialmente.", extra: "Alcanzó 100 millones de usuarios en 2 meses. Transformó industrias, arte y programación.", icon: 'prompt' },
+            { year: 2023, title: "Era del Razonamiento: GPT-4", desc: "Modelos a gran escala superan pruebas estandarizadas (Bar Exam, SAT) a nivel humano.", extra: "Surgimiento de agentes autónomos tempranos y comprensión contextual masiva.", icon: 'complexNet' },
+            { year: 2024, title: "Video Realista & Open Source", desc: "Sora de OpenAI y Llama 3 impulsan la democratización y el hiperrealismo.", extra: "La generación de mundos físicos simulados a partir de texto abre la puerta a motores físicos neuronales.", icon: 'videoGen' },
+            { year: 2025, title: "Agentes Multimodales", desc: "Sistemas de IA que interactúan de forma nativa con voz, visión y robótica en tiempo real.", extra: "La IA abandona el chat de texto para convertirse en copilotos ubicuos en sistemas operativos físicos y digitales.", icon: 'agiEye' },
+            { year: "2026+", title: "El Horizonte AGI", desc: "Sistemas capaces de superar el intelecto humano en la mayoría de trabajos económicamente valiosos.", extra: "¿Autocorrección de código infinito? ¿Singularidad? La historia la escribiremos humanos y máquinas juntos.", icon: 'galaxy' }
+        ];
+
+        const timelineContainer = document.getElementById('timeline-content-wrapper');
+
+        milestones.forEach((item, index) => {
+            const html = `
+                <div class="timeline-item" id="item-${index}">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass-panel">
+                        <div class="year-wrapper">
+                            <svg class="svg-icon" viewBox="0 0 100 100">${svgLibrary[item.icon]}</svg>
+                            <div class="year orbitron" data-target="${item.year === '2026+' ? 2026 : item.year}">${item.year === '2026+' ? '2026+' : '0000'}</div>
+                        </div>
+                        <h3 class="title orbitron">${item.title}</h3>
+                        <p class="desc">${item.desc}</p>
+                        <div class="extra-info">${item.extra}</div>
+                    </div>
+                </div>
+            `;
+            timelineContainer.innerHTML += html;
+        });
+
+        /* ================= SCROLL & OBSERVER LOGIC ================= */
+        const timelineProgress = document.getElementById('timeline-progress');
+        const items = document.querySelectorAll('.timeline-item');
+
+        // Observer for revealing items
+        const observerOptions = { root: null, rootMargin: "0px 0px -15% 0px", threshold: 0.1 };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    animateYear(entry.target.querySelector('.year'));
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        items.forEach(item => observer.observe(item));
+
+        // Animate numbers
+        function animateYear(el) {
+            const target = el.getAttribute('data-target');
+            if(target === '2026') { el.innerText = '2026+'; return; }
+            let current = 1900;
+            const end = parseInt(target);
+            const duration = 1500;
+            const stepTime = Math.abs(Math.floor(duration / (end - current)));
+            
+            const timer = setInterval(() => {
+                current += Math.ceil((end - current) * 0.1);
+                el.innerText = current;
+                if (current >= end) {
+                    el.innerText = end;
+                    clearInterval(timer);
+                }
+            }, stepTime);
+        }
+
+        // Fill line on scroll
+        window.addEventListener('scroll', () => {
+            const scrollPos = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const containerStart = document.getElementById('timeline-container').offsetTop;
+            const containerHeight = document.getElementById('timeline-container').offsetHeight;
+            
+            let progress = 0;
+            if (scrollPos > containerStart - windowHeight/2) {
+                progress = ((scrollPos - (containerStart - windowHeight/2)) / containerHeight) * 100;
+            }
+            progress = Math.max(0, Math.min(100, progress + 10)); // Add a buffer
+            timelineProgress.style.height = `${progress}%`;
+        });
+
+        /* ================= NUEVO SISTEMA DE AUDIO (EFECTOS Y AMBIENTE SUAVE) ================= */
+        let audioCtx;
+        let ambientPlaying = false;
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        // Efecto de sonido al pasar el ratón por encima de las tarjetas (Blip holográfico)
+        function playHoverSound() {
+            if (!audioCtx || audioCtx.state !== 'running') return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            // Frecuencia aleatoria para dar sensación de datos procesándose
+            osc.frequency.setValueAtTime(1000 + Math.random() * 500, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.015, audioCtx.currentTime); // Volumen muy bajito
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1); // Desaparece rápido
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.1);
+        }
+
+        // Sonido de inicio al hacer clic en "Explorar" + Viento Espacial suave
+        function playStartEffects() {
+            initAudio();
+            
+            // 1. Sonido de "Encendido" (Power up sweep)
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.6);
+            gain.gain.setValueAtTime(0, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(0.05, audioCtx.currentTime + 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 1);
+
+            // 2. Viento espacial muy suave (Ruido blanco filtrado)
+            if (!ambientPlaying) {
+                ambientPlaying = true;
+                const bufferSize = audioCtx.sampleRate * 2;
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1; // Genera ruido
+                
+                const noise = audioCtx.createBufferSource();
+                noise.buffer = buffer;
+                noise.loop = true;
+                
+                // Filtro para quitar frecuencias molestas y dejar un soplido grave
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = 300;
+                filter.Q.value = 0.5;
+
+                // Modulador para que el viento suba y baje sutilmente
+                const lfo = audioCtx.createOscillator();
+                lfo.type = 'sine';
+                lfo.frequency.value = 0.05; // Muy lento
+                const lfoGain = audioCtx.createGain();
+                lfoGain.gain.value = 150;
+                lfo.connect(lfoGain);
+                lfoGain.connect(filter.frequency);
+                lfo.start();
+                
+                const ambGain = audioCtx.createGain();
+                ambGain.gain.setValueAtTime(0, audioCtx.currentTime);
+                ambGain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 4); // Volumen bajísimo del ambiente
+
+                noise.connect(filter);
+                filter.connect(ambGain);
+                ambGain.connect(audioCtx.destination);
+                noise.start();
+            }
+        }
+
+        // Asignar el evento de hover a todas las tarjetas recién creadas
+        setTimeout(() => {
+            document.querySelectorAll('.timeline-content').forEach(card => {
+                card.addEventListener('mouseenter', playHoverSound);
+            });
+        }, 100);
+
+        function startJourney() {
+            playStartEffects();
+            document.getElementById('timeline-container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        /* ================= CANVAS PARTICLES (DUST/NEURAL NETWORK) ================= */
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [];
+
+        function initCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            particles = [];
+            for(let i=0; i<80; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    size: Math.random() * 2 + 0.5,
+                    color: Math.random() > 0.5 ? '#00f3ff' : '#bc13fe'
+                });
+            }
+        }
+
+        function drawCanvas() {
+            ctx.clearRect(0, 0, width, height);
+            
+            for(let i=0; i<particles.length; i++) {
+                let p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+
+                // Wrap around edges
+                if(p.x < 0) p.x = width;
+                if(p.x > width) p.x = 0;
+                if(p.y < 0) p.y = height;
+                if(p.y > height) p.y = 0;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = 0.5;
+                ctx.fill();
+
+                // Draw lines between close particles
+                for(let j=i+1; j<particles.length; j++) {
+                    let p2 = particles[j];
+                    let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                    if(dist < 100) {
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = p.color;
+                        ctx.globalAlpha = 1 - (dist / 100);
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(drawCanvas);
+        }
+
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+        drawCanvas();
+
+        /* ================= FOOTER STATS ANIMATION ================= */
+        function animateStat(id, endVal, suffix) {
+            let el = document.getElementById(id);
+            let current = 0;
+            let timer = setInterval(() => {
+                current += endVal / 50;
+                if(current >= endVal) { current = endVal; clearInterval(timer); }
+                el.innerText = current.toFixed(1) + suffix;
+            }, 30);
+        }
+
+        // Trigger stats when footer is reached
+        const footerObserver = new IntersectionObserver((entries) => {
+            if(entries[0].isIntersecting) {
+                animateStat('stat-params', 1.7, 'T+'); // Params
+                animateStat('stat-petaflops', 100, '+'); // FLOPs
+                footerObserver.disconnect();
+            }
+        }, { threshold: 0.5 });
+        footerObserver.observe(document.getElementById('footer'));
+
+    </script>
+</body>
+</html>
