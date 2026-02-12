@@ -367,10 +367,10 @@
     <!-- Hero Section -->
     <header id="hero">
         <div class="glitch-wrapper">
-            <h1 class="glitch orbitron" data-text="EL ASCENSO DE LA IA">EL ASCENSO DE LA IA</h1>
+            <h1 class="glitch orbitron" data-text="THE AI TIMELINE">THE AI TIMELINE</h1>
         </div>
-        <p class="hero-subtitle orbitron">Un viaje cronológico al futuro</p>
-        <button class="btn-explore orbitron" onclick="startJourney()">Explorar Timeline ↓</button>
+        <p class="hero-subtitle orbitron">I hope you enjoy it</p>
+        <button class="btn-explore orbitron" onclick="startJourney()">Explore the Timeline</button>
     </header>
 
     <!-- Timeline Section -->
@@ -385,8 +385,8 @@
 
     <!-- Footer -->
     <footer id="footer">
-        <h2 class="orbitron neon-text-purple" style="font-size: 3rem; margin-bottom: 20px;">GRACIAS POR VER</h2>
-        <p class="hero-subtitle orbitron" style="color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan);">Hecho por Adrián Yael Verdejo Figueroa</p>
+        <h2 class="orbitron neon-text-purple" style="font-size: 3rem; margin-bottom: 20px;">THANK YOU FOR WHATCHING</h2>
+        <p class="hero-subtitle orbitron" style="color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan);">Made by Adrián Yael Verdejo Figueroa</p>
     </footer>
 
     <!-- JS Logic -->
@@ -413,24 +413,24 @@
         };
 
         const milestones = [
-            { year: 1943, title: "Redes Neuronales Teóricas", desc: "Warren McCulloch y Walter Pitts proponen el primer modelo matemático de una red neuronal artificial.", extra: "Inspirado en la biología, demostraron que una red simple podía calcular cualquier función lógica.", icon: 'brain' },
-            { year: 1950, title: "El Test de Turing", desc: "Alan Turing publica 'Computing Machinery and Intelligence', introduciendo el 'Juego de la Imitación'.", extra: "Estableció el estándar filosófico de qué significa que una máquina 'piense'.", icon: 'robot' },
-            { year: 1956, title: "Conferencia de Dartmouth", desc: "Nace oficialmente el término 'Inteligencia Artificial'.", extra: "John McCarthy, Marvin Minsky, y otros fundan el campo con la premisa de simular cada aspecto del aprendizaje humano.", icon: 'academic' },
-            { year: 1966, title: "ELIZA", desc: "Joseph Weizenbaum crea el primer chatbot en el MIT, simulando a un psicoterapeuta.", extra: "Sorprendió al mundo al demostrar que los humanos empatizan fácilmente con programas simples de procesamiento de lenguaje.", icon: 'chat' },
-            { year: 1969, title: "El Perceptrón", desc: "Minsky y Papert publican una crítica a las redes neuronales simples, causando el primer 'Invierno de la IA'.", extra: "Demostraron limitaciones en compuertas XOR, pausando la inversión en redes neuronales por años.", icon: 'network' },
-            { year: 1980, title: "Sistemas Expertos", desc: "Auge de programas diseñados para emular la toma de decisiones de expertos humanos (ej. XCON).", extra: "Revivió la industria comercialmente, pero resultaron frágiles y difíciles de mantener.", icon: 'database' },
-            { year: 1997, title: "Deep Blue vs Kasparov", desc: "La supercomputadora de IBM derrota al campeón mundial de ajedrez Garry Kasparov.", extra: "Un hito de la 'IA Simbólica' y la fuerza bruta computacional.", icon: 'chess' },
-            { year: 2011, title: "IBM Watson Gana Jeopardy!", desc: "Watson vence a los campeones humanos Ken Jennings y Brad Rutter usando NLP.", extra: "Demostró la capacidad de entender lenguaje natural complejo, modismos y juegos de palabras.", icon: 'magnify' },
-            { year: 2012, title: "La Revolución AlexNet", desc: "Una red neuronal convolucional (CNN) arrasa en la competencia ImageNet.", extra: "Inició la era moderna del Deep Learning aprovechando el poder masivo de las GPUs.", icon: 'layers' },
-            { year: 2016, title: "AlphaGo", desc: "La IA de DeepMind derrota a Lee Sedol, campeón mundial del complejo juego de mesa Go.", extra: "Utilizó Aprendizaje por Refuerzo (RL) combinado con redes neuronales, superando intuición humana.", icon: 'goBoard' },
-            { year: 2017, title: "Transformers", desc: "Google publica el paper 'Attention Is All You Need', revolucionando el NLP.", extra: "El mecanismo de 'Atención' permitió procesar texto en paralelo, allanando el camino para los LLMs.", icon: 'transformer' },
-            { year: 2018, title: "Nace GPT-1", desc: "OpenAI lanza el Generative Pre-trained Transformer original.", extra: "Demostró que pre-entrenar un modelo en texto no etiquetado y luego refinarlo era el camino al éxito.", icon: 'gptNode' },
-            { year: 2022, title: "ChatGPT & DALL-E", desc: "La explosión generativa. La IA se vuelve accesible y viral mundialmente.", extra: "Alcanzó 100 millones de usuarios en 2 meses. Transformó industrias, arte y programación.", icon: 'prompt' },
-            { year: 2023, title: "Era del Razonamiento: GPT-4", desc: "Modelos a gran escala superan pruebas estandarizadas (Bar Exam, SAT) a nivel humano.", extra: "Surgimiento de agentes autónomos tempranos y comprensión contextual masiva.", icon: 'complexNet' },
-            { year: 2024, title: "Video Realista & Open Source", desc: "Sora de OpenAI y Llama 3 impulsan la democratización y el hiperrealismo.", extra: "La generación de mundos físicos simulados a partir de texto abre la puerta a motores físicos neuronales.", icon: 'videoGen' },
-            { year: 2025, title: "Agentes Multimodales", desc: "Sistemas de IA que interactúan de forma nativa con voz, visión y robótica en tiempo real.", extra: "La IA abandona el chat de texto para convertirse en copilotos ubicuos en sistemas operativos físicos y digitales.", icon: 'agiEye' },
-            { year: "2026+", title: "El Horizonte AGI", desc: "Sistemas capaces de superar el intelecto humano en la mayoría de trabajos económicamente valiosos.", extra: "¿Autocorrección de código infinito? ¿Singularidad? La historia la escribiremos humanos y máquinas juntos.", icon: 'galaxy' }
-        ];
+    { year: 1943, title: "Theoretical Neural Networks", desc: "Warren McCulloch and Walter Pitts propose the first mathematical model of an artificial neural network.", extra: "Inspired by biology, they demonstrated that a simple network could compute any logical function.", icon: 'brain' },
+    { year: 1950, title: "The Turing Test", desc: "Alan Turing publishes 'Computing Machinery and Intelligence', introducing the 'Imitation Game'.", extra: "Established the philosophical standard for what it means for a machine to 'think'.", icon: 'robot' },
+    { year: 1956, title: "Dartmouth Conference", desc: "The term 'Artificial Intelligence' is officially born.", extra: "John McCarthy, Marvin Minsky, and others found the field aiming to simulate every aspect of human learning.", icon: 'academic' },
+    { year: 1966, title: "ELIZA", desc: "Joseph Weizenbaum creates the first chatbot at MIT, simulating a psychotherapist.", extra: "Shocked the world by showing humans easily empathize with simple language processing programs.", icon: 'chat' },
+    { year: 1969, title: "The Perceptron", desc: "Minsky and Papert publish a critique of simple neural networks, causing the first 'AI Winter'.", extra: "Demonstrated limitations with XOR gates, halting neural network investment for years.", icon: 'network' },
+    { year: 1980, title: "Expert Systems", desc: "Rise of programs designed to emulate human expert decision-making (e.g., XCON).", extra: "Revived the industry commercially but proved fragile and difficult to maintain.", icon: 'database' },
+    { year: 1997, title: "Deep Blue vs Kasparov", desc: "IBM's supercomputer defeats world chess champion Garry Kasparov.", extra: "A milestone of 'Symbolic AI' and brute force computing power.", icon: 'chess' },
+    { year: 2011, title: "IBM Watson Wins Jeopardy!", desc: "Watson defeats human champions Ken Jennings and Brad Rutter using NLP.", extra: "Demonstrated understanding of complex natural language, idioms, and puns.", icon: 'magnify' },
+    { year: 2012, title: "AlexNet Revolution", desc: "A convolutional neural network (CNN) dominates the ImageNet competition.", extra: "Launched the modern Deep Learning era by harnessing massive GPU power.", icon: 'layers' },
+    { year: 2016, title: "AlphaGo", desc: "DeepMind's AI defeats world Go champion Lee Sedol in the complex board game.", extra: "Used Reinforcement Learning (RL) combined with neural networks, surpassing human intuition.", icon: 'goBoard' },
+    { year: 2017, title: "Transformers", desc: "Google publishes 'Attention Is All You Need', revolutionizing NLP.", extra: "The 'Attention' mechanism enabled parallel text processing, paving the way for LLMs.", icon: 'transformer' },
+    { year: 2018, title: "GPT-1 is Born", desc: "OpenAI launches the original Generative Pre-trained Transformer.", extra: "Proved pre-training on unlabeled text then fine-tuning was the path to success.", icon: 'gptNode' },
+    { year: 2022, title: "ChatGPT & DALL-E", desc: "The generative explosion. AI becomes accessible and viral worldwide.", extra: "Reached 100 million users in 2 months. Transformed industries, art, and programming.", icon: 'prompt' },
+    { year: 2023, title: "Reasoning Era: GPT-4", desc: "Large-scale models surpass standardized tests (Bar Exam, SAT) at human level.", extra: "Emergence of early autonomous agents and massive contextual understanding.", icon: 'complexNet' },
+    { year: 2024, title: "Realistic Video & Open Source", desc: "OpenAI's Sora and Llama 3 drive democratization and hyperrealism.", extra: "Text-to-physical-world generation opens doors to neural physics engines.", icon: 'videoGen' },
+    { year: 2025, title: "Multimodal Agents", desc: "AI systems natively interacting with voice, vision, and robotics in real-time.", extra: "AI abandons text chat to become ubiquitous copilots in physical and digital OS.", icon: 'agiEye' },
+    { year: "2026+", title: "The AGI Horizon", desc: "Systems capable of surpassing human intellect in most economically valuable work.", extra: "Infinite code self-correction? Singularity? History written by humans and machines together.", icon: 'galaxy' }
+];
 
         const timelineContainer = document.getElementById('timeline-content-wrapper');
 
